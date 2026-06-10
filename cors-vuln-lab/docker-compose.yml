@@ -1,0 +1,28 @@
+services:
+  # The target: SecureBank, with the vulnerable CORS configuration.
+  victim:
+    build: ./victim
+    container_name: cors-lab-victim
+    ports:
+      - "5000:5000"
+    networks:
+      - cors-lab-network
+    stdin_open: true
+    tty: true
+
+  # The attacker site that hosts the exploit pages and collects stolen data.
+  attacker:
+    build: ./attacker
+    container_name: cors-lab-attacker
+    ports:
+      - "8000:8000"
+    networks:
+      - cors-lab-network
+    depends_on:
+      - victim
+    stdin_open: true
+    tty: true
+
+networks:
+  cors-lab-network:
+    driver: bridge

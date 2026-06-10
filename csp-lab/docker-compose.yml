@@ -1,0 +1,22 @@
+services:
+  victim:
+    build: ./victim-site
+    ports:
+      - "8181:8181"
+    container_name: csp-victim-bank
+    networks:
+      - csp-lab-network
+    restart: unless-stopped
+
+  attacker:
+    build: ./attacker-site
+    ports:
+      - "9090:9090"
+    container_name: csp-attacker-server
+    networks:
+      - csp-lab-network
+    restart: unless-stopped
+
+networks:
+  csp-lab-network:
+    driver: bridge

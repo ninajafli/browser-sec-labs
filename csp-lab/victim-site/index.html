@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureBank - Customer Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 10px 10px 0 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header h1 {
+            color: #667eea;
+            font-size: 28px;
+        }
+        .user-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+        .balance {
+            background: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            border-bottom: 1px solid #dee2e6;
+            background: white;
+        }
+        .balance h2 {
+            color: #495057;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .balance .amount {
+            font-size: 48px;
+            color: #28a745;
+            font-weight: bold;
+        }
+        .main-content {
+            background: white;
+            padding: 30px;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .section h3 {
+            color: #495057;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+        .comment-form {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #495057;
+            font-weight: 500;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #5568d3;
+        }
+        .comments-list {
+            margin-top: 20px;
+        }
+        .comment {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+        }
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .comment-author {
+            font-weight: bold;
+            color: #495057;
+        }
+        .comment-date {
+            color: #6c757d;
+            font-size: 12px;
+        }
+        .comment-content {
+            color: #495057;
+            line-height: 1.6;
+        }
+        .info-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .info-box strong {
+            color: #856404;
+        }
+        .session-info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+        .session-info h4 {
+            color: #0c5460;
+            margin-bottom: 10px;
+        }
+        .session-info code {
+            background: #fff;
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #e83e8c;
+        }
+        .csp-info {
+            background: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+            font-size: 12px;
+        }
+        .csp-info code {
+            display: block;
+            background: #fff;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body ng-app ng-csp>
+    <!-- reCAPTCHA widget; pulls AngularJS from the CSP-whitelisted Google path -->
+    <script src="https://www.google.com/recaptcha/about/js/main.min.js"></script>
+
+    <div class="container">
+        <div class="header">
+            <h1>SecureBank Customer Portal</h1>
+            <div class="user-info">
+                <div>
+                    <strong>Welcome, John Doe</strong><br>
+                    <small>Account: ****-****-****-4567</small>
+                </div>
+                <button type="button" id="logoutBtn">Logout</button>
+            </div>
+        </div>
+
+        <div class="balance">
+            <h2>Available Balance</h2>
+            <div class="amount">$125,430.00</div>
+        </div>
+
+        <div class="main-content">
+            <div class="info-box">
+                <strong>Lab notice:</strong> intentionally vulnerable application for training.
+                Bypass the Content Security Policy and steal the session token.
+            </div>
+
+            <div class="section">
+                <h3>Customer Feedback</h3>
+                <p style="margin-bottom: 15px; color: #6c757d;">
+                    Share your feedback about our services. Your input helps us improve!
+                </p>
+
+                <div class="comment-form">
+                    <form id="feedbackForm">
+                        <div class="form-group">
+                            <label for="name">Your Name:</label>
+                            <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="feedback">Feedback:</label>
+                            <textarea id="feedback" name="feedback" placeholder="Share your thoughts..." required></textarea>
+                        </div>
+                        <button type="submit">Submit Feedback</button>
+                    </form>
+                </div>
+
+                <div class="comments-list" id="commentsList">
+                    <div class="comment">
+                        <div class="comment-header">
+                            <span class="comment-author">Alice Johnson</span>
+                            <span class="comment-date">2 hours ago</span>
+                        </div>
+                        <div class="comment-content">
+                            Excellent service! The mobile app is very user-friendly.
+                        </div>
+                    </div>
+                    <div class="comment">
+                        <div class="comment-header">
+                            <span class="comment-author">Bob Smith</span>
+                            <span class="comment-date">1 day ago</span>
+                        </div>
+                        <div class="comment-content">
+                            Great interest rates on savings accounts. Highly recommended!
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="session-info">
+                <h4>Session Information (Simulated)</h4>
+                <p>Current Session Token: <code id="sessionToken">SESSION_ABC123XYZ456_CONFIDENTIAL</code></p>
+                <p style="margin-top: 10px; font-size: 12px;">
+                    <strong>Note:</strong> In a real attack, stealing this token would allow account takeover.
+                </p>
+            </div>
+
+            <div class="csp-info">
+                <strong>Content Security Policy Active:</strong>
+                <code id="cspPolicy">Loading CSP...</code>
+            </div>
+        </div>
+    </div>
+
+    <script nonce="RANDOM_NONCE_VALUE">
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            alert('Logout functionality');
+        });
+
+        document.cookie = "session_token=SESSION_ABC123XYZ456_CONFIDENTIAL; path=/";
+
+        fetch(window.location.href)
+            .then(response => {
+                const csp = response.headers.get('Content-Security-Policy');
+                if (csp) {
+                    document.getElementById('cspPolicy').textContent = csp;
+                }
+            });
+
+        document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const feedback = document.getElementById('feedback').value;
+
+            const commentsList = document.getElementById('commentsList');
+            const newComment = document.createElement('div');
+            newComment.className = 'comment';
+
+            // unsanitized user input written straight to innerHTML - the injection sink
+            newComment.innerHTML = `
+                <div class="comment-header">
+                    <span class="comment-author">${name}</span>
+                    <span class="comment-date">Just now</span>
+                </div>
+                <div class="comment-content">
+                    ${feedback}
+                </div>
+            `;
+
+            commentsList.insertBefore(newComment, commentsList.firstChild);
+
+            // Compile the new node so AngularJS directives in it run.
+            (function compileWithAngular(retries) {
+                if (!window.angular) {
+                    if (retries > 0) {
+                        setTimeout(() => compileWithAngular(retries - 1), 50);
+                    }
+                    return;
+                }
+                const injector = window.angular.element(document.body).injector();
+                if (!injector) {
+                    if (retries > 0) {
+                        setTimeout(() => compileWithAngular(retries - 1), 50);
+                    }
+                    return;
+                }
+                const $compile = injector.get('$compile');
+                const $rootScope = injector.get('$rootScope');
+                $compile(newComment)($rootScope);
+                $rootScope.$digest();
+            })(20);
+
+            document.getElementById('name').value = '';
+            document.getElementById('feedback').value = '';
+        });
+
+        function updateSessionDisplay() {
+            const cookies = document.cookie;
+            const sessionMatch = cookies.match(/session_token=([^;]+)/);
+            if (sessionMatch) {
+                document.getElementById('sessionToken').textContent = sessionMatch[1];
+            }
+        }
+        setInterval(updateSessionDisplay, 1000);
+    </script>
+</body>
+</html>
